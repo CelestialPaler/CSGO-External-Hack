@@ -1,3 +1,27 @@
+﻿// CTHackFramework 														      
+//	A framework for general game hacking								      
+// Copyright © 2019 Celestial Tech All rights reserved.
+//
+// The MIT License (MIT)
+// Copyright (c) 2019 Celestial Tech
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+// 
+// The above copyright noticeand this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include "HUD.h"
 
 void HUD::DrawRect(int x, int y, int w, int h, int stroke, DirectX::XMFLOAT3 color)
@@ -66,28 +90,50 @@ void HUD::ShowDeclare(int x, int y)
 	DrawString(L"Development Build : " + devVersion, x, y + 40, Red);
 }
 
+DX::StepTimer s_timer;
+
+void StepTimerUpdate(DX::StepTimer const& timer)
+{
+	float delta = float(timer.GetElapsedSeconds());
+}
+
+void Tick()
+{
+	s_timer.Tick([&]()
+		{
+			StepTimerUpdate(s_timer);
+		});
+}
+
+
 void HUD::ShowTimeDebug(int x, int y)
 {
+	Tick();
+
 	std::stringstream ss;
-	ss << "Performance Debug Info:";
+	ss << "Performance Debug Info: ";
 	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y, Red);
 	ss.str("");
 
-	ss << "UTDelta:" << std::setprecision(3) << smoothDelta << std::setfill(' ');
+	ss << "UTDelta: " << std::setprecision(3) << smoothDelta << std::setfill(' ');
 	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 20, Red);
 	ss.str("");
 
 	int fps = (int)GetFPS();
-	ss << "FPS/UPS:" << std::dec << fps << "/" << (int)(1000 / smoothDelta);
+	ss << "FPS/UPS: " << std::dec << fps << "/" << (int)(1000 / smoothDelta);
 	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 40, Red);
 	ss.str("");
 
-	ss << "CT/LT/FC:" << currentTime << "/" << lastTime;
+	ss << "CT/LT: " << currentTime << "/" << lastTime;
 	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 60, Red);
 	ss.str("");
 
-	ss << "FC/FPS:" << frameCount << "/" << fps;
+	ss << "Local FPS/FC: " << fps << "/" << frameCount;
 	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 80, Red);
+	ss.str("");
+
+	ss << "Step FPS: " << s_timer.GetFramesPerSecond();
+	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 100, Red);
 	ss.str("");
 }
 
@@ -123,6 +169,44 @@ void HUD::ShowFunctionInfo(int x, int y)
 	ss.str("");
 }
 
+void HUD::ShowESPDebug(int x, int y)
+{
+	std::stringstream ss;
+	ss << "ESP Debug Info: ";
+	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y, Red);
+	ss.str("");
+
+	int teammatesNum = 0, enemyNum = 0;
+	int teammatesLiveNum = 0, enemyLiveNum = 0;
+	for (size_t i = 0; i < teammates.size(); i++)
+	{
+		if (teammates.at(i)->id != 0)
+		{
+			teammatesNum++;
+			if (teammates.at(i)->health != 0)
+				teammatesLiveNum++;
+		}
+	}
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		if (enemy.at(i)->id != 0)
+		{
+			enemyNum++;
+			if (enemy.at(i)->health != 0)
+				enemyLiveNum++;
+		}
+	}
+
+	ss << "TM: " << std::setw(2) << enemyLiveNum << "/" << enemyNum;
+	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 20, Red);
+	ss.str("");
+
+	ss << "EN: " << std::setw(2) << teammatesLiveNum << "/" << teammatesNum;
+	DrawString(Util::StringManipulation::StringToWstring(ss.str()), x, y + 40, Red);
+	ss.str("");
+}
+
 void HUD::ShowESP()
 {
 	for (size_t i = 0; i < 9; i++)
@@ -148,16 +232,17 @@ void HUD::ShowPlayer(const std::unique_ptr<Player> & player)
 	int y = player->bodyScrCoords.y;
 	// int w = 100 * 500 / player->distance;
 	// int h = 200 * 500 / player->distance ;
-	int w = 100;
+	int w = 50;
 	int h = 10;
 	if (x * y != 0)
 	{
 		DirectX::XMFLOAT3 color = player->team == localPlayer->team ? Green : Red;
 		//DrawRect(x, targetWndHeight - y, w, h, 1, color);
 		DrawLine(x, targetWndHeight - y - h / 2, targetWndWidth / 2, -100, 2, color);
-		DrawRect(x, targetWndHeight - y + h / 2 + 5, player->health, 2, 2, color);
-		DrawString(Util::StringManipulation::StringToWstring(std::to_string(player->health)), x - w / 2, y - h / 2, color);
-		//DrawString(Util::StringManipulation::StringToWstring("NULL"), x - w / 2, y + h / 2 - 24, color);
+		DrawRect(x, targetWndHeight - y + h / 2 + 5, player->health / 2, 2, 2, color);
+		std::stringstream ss;
+		ss << player->health << " " << (int)(player->distance / 10) << "m";
+		DrawString(Util::StringManipulation::StringToWstring(ss.str()), x - w, y - h / 2, color);
 	}
 }
 
@@ -271,6 +356,7 @@ int HUD::WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, 
 			ShowDeclare(10, 5);
 			ShowTimeDebug(1520, 500);
 			ShowFunctionInfo(1620, 300);
+			ShowESPDebug(1620, 700);
 
 			if (FunctionEnableFlag::bESP)
 			{

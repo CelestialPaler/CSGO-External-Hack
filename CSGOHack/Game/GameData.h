@@ -38,9 +38,21 @@ extern std::vector<std::unique_ptr<Player>> enemy;
 
 namespace FunctionEnableFlag
 {
-	extern bool bHealthReader;
-	extern bool bTriggerBot;
 	extern bool bOverlay;
+	extern bool bTriggerBot;
+	extern bool bAimBot;
 	extern bool bESP;
+	extern bool bRadarHack;
+	extern bool bNULL;
+}
+
+namespace ThreadExistFlag
+{
+	extern bool bGeneral;
+	extern bool bOverlay;
+	extern bool bTriggerBot;
+	extern bool bAimBot;
+	extern bool bESP;
+	extern bool bRadarHack;
 	extern bool bNULL;
 }

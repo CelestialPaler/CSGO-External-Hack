@@ -1,3 +1,27 @@
+ï»¿// CTHackFramework 														      
+//	A framework for general game hacking								      
+// Copyright Â© 2019 Celestial Tech All rights reserved.
+//
+// The MIT License (MIT)
+// Copyright (c) 2019 Celestial Tech
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+// 
+// The above copyright noticeand this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include "ESP.h"
 
 float viewMatrix[4][4] = { 0 };
@@ -30,33 +54,33 @@ void ReadOtherPlayersInfo(void)
 	Process* proc = Process::GetInstance();
 	QWORD clientBaseAddr = proc->moduleBaseAddr[L"client_panorama.dll"];
 
-	// ±íÊ¾ÏÂÒ»¸öĞèÒªĞ´ÈëÊı¾İµÄÍæ¼Ò
+	// è¡¨ç¤ºä¸‹ä¸€ä¸ªéœ€è¦å†™å…¥æ•°æ®çš„ç©å®¶
 	int teammateIndex = 0, enemyIndex = 0;
 
-	// ±éÀúËùÓĞÍæ¼Ò
-	/// ´Ó1¿ªÊ¼£¬ÅÅ³ı±¾µØÍæ¼Ò
+	// éå†æ‰€æœ‰ç©å®¶
+	/// ä»1å¼€å§‹ï¼Œæ’é™¤æœ¬åœ°ç©å®¶
 	for (size_t i = 1; i < 40; i++)
 	{
 		DWORD otherPlayerAddr = proc->ReadDWORD(clientBaseAddr + (QWORD)hazedumper::signatures::dwEntityList + (QWORD)i * 0x10);
 
-		// ÈôÍæ¼Ò²»´æÔÚ
+		// è‹¥ç©å®¶ä¸å­˜åœ¨
 		if (otherPlayerAddr == 0) break;
 
-		// ´´½¨ÁÙÊ±Íæ¼Ò
+		// åˆ›å»ºä¸´æ—¶ç©å®¶
 		std::unique_ptr<Player> tempPlayer = std::make_unique<Player>();
 
-		// ¶ÁÈ¡»ù±¾ĞÅÏ¢
+		// è¯»å–åŸºæœ¬ä¿¡æ¯
 		tempPlayer->health = proc->ReadInt32(otherPlayerAddr + (QWORD)hazedumper::netvars::m_iHealth);
 		tempPlayer->team = proc->ReadInt32(otherPlayerAddr + (QWORD)hazedumper::netvars::m_iTeamNum);
 		tempPlayer->id = proc->ReadInt32(otherPlayerAddr + (QWORD)hazedumper::netvars::m_iAccountID);
 		tempPlayer->isSpotted = proc->ReadBool(otherPlayerAddr + (QWORD)hazedumper::netvars::m_bIsScoped) & (1 << localPlayer->id - 1);
 
-		// ¶ÁÈ¡ÉíÌå¾ø¶Ô¿Õ¼ä×ø±ê
+		// è¯»å–èº«ä½“ç»å¯¹ç©ºé—´åæ ‡
 		tempPlayer->bodyGameCoords.x = proc->ReadFloat(otherPlayerAddr + (QWORD)hazedumper::netvars::m_vecOrigin + sizeof(float) * 0);
 		tempPlayer->bodyGameCoords.y = proc->ReadFloat(otherPlayerAddr + (QWORD)hazedumper::netvars::m_vecOrigin + sizeof(float) * 1);
 		tempPlayer->bodyGameCoords.z = proc->ReadFloat(otherPlayerAddr + (QWORD)hazedumper::netvars::m_vecOrigin + sizeof(float) * 2);
 
-		// ¼ÆËãÉíÌåÏà¶ÔÆÁÄ»×ø±ê
+		// è®¡ç®—èº«ä½“ç›¸å¯¹å±å¹•åæ ‡
 		if (WorldProjectToScreen(tempPlayer->bodyGameCoords, tempPlayer->bodyScrCoords))
 		{
 			tempPlayer->bodyScrCoords.x -= targetRect.left;
@@ -64,15 +88,15 @@ void ReadOtherPlayersInfo(void)
 		}
 		else
 		{
-			// Èç¹ûÍ¶Ó°Ê§°Ü£¬¾Í¹éÁã´¦Àí
+			// å¦‚æœæŠ•å½±å¤±è´¥ï¼Œå°±å½’é›¶å¤„ç†
 			tempPlayer->bodyScrCoords.x = 0;
 			tempPlayer->bodyScrCoords.y = 0;
 		}
 
-		// ¼ÆËãÓëÍæ¼ÒµÄ¾àÀë
+		// è®¡ç®—ä¸ç©å®¶çš„è·ç¦»
 		tempPlayer->distance = CalculateDistance(tempPlayer->bodyGameCoords, localPlayer->bodyGameCoords);
 
-		// ÅĞ¶ÏÊÇ·ñÊÇ¶ÓÓÑ
+		// åˆ¤æ–­æ˜¯å¦æ˜¯é˜Ÿå‹
 		if (tempPlayer->team != 0 && tempPlayer->team == localPlayer->team)
 			teammates.at(teammateIndex++).swap(tempPlayer);
 		else

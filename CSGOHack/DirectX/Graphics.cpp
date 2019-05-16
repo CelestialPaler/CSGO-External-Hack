@@ -21,7 +21,7 @@ void Graphics::ClearFrame()
 bool Graphics::DrawRect(int x1, int y1, int x2, int y2, DirectX::XMFLOAT3 color, int w, int h)
 {
 	// 取得Logger
-	//Util::Logger* logger = Util::Logger::GetInstance();
+	Util::Logger* logger = Util::Logger::GetInstance();
 
 	// 转换为屏幕百分比 （-1.0，1.0）
 	float x1Persentage = ((float)x1 / w - 0.5) * 2;
@@ -57,14 +57,14 @@ bool Graphics::DrawRect(int x1, int y1, int x2, int y2, DirectX::XMFLOAT3 color,
 	HRESULT hr = this->device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
-		// 日志
-		//{
-		//	Util::Logger::LogDisc msg;
-		//	msg.emPriority = Util::Logger::Priority::ERR;
-		//	msg.szFrom = __func__;
-		//	msg.szMsg = "创建DirectX缓冲失败";
-		//	logger->Write(msg);
-		//}
+		 // 日志
+		{
+			Util::Logger::LogDisc msg;
+			msg.emPriority = Util::Logger::Priority::ERR;
+			msg.szFrom = __func__;
+			msg.szMsg = "Failed to create vertex buffer.";
+			logger->Write(msg);
+		}
 		return false;
 	}
 
@@ -158,6 +158,7 @@ bool Graphics::DrawCircle(int x, int y, int rad, int count, DirectX::XMFLOAT3 co
 void Graphics::RenderFrame()
 {
 	this->swapchain->Present(1, NULL);
+	this->deviceContext->Flush();
 }
 
 bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
@@ -365,22 +366,21 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 bool Graphics::InitializeShaders()
 {
-
 	std::wstring shaderfolder = L"";
 #pragma region DetermineShaderPath
 	if (IsDebuggerPresent() == TRUE)
 	{
 #ifdef _DEBUG //Debug Mode
 	#ifdef _WIN64 //x64
-			shaderfolder = L"Shader\\";
+			shaderfolder = L"Shader//";
 	#else  //x86 (Win32)
-			shaderfolder = L"Shader\\";
+			shaderfolder = L"Shader//";
 	#endif
 	#else //Release Mode
 	#ifdef _WIN64 //x64
-			shaderfolder = L"Shader\\";
+			shaderfolder = L"Shader//";
 	#else  //x86 (Win32)
-			shaderfolder = L"Shader\\";
+			shaderfolder = L"Shader//";
 	#endif
 #endif
 	}

@@ -1,14 +1,14 @@
 #include "GameData.h"
 
 // 当前开发版本
-const std::wstring devVersion = L"0.6a";
+const std::wstring devVersion = L"0.6b";
 
 // 目标进程ID
 DWORD targetPID;
 // 目标进程名称
-const std::wstring targetProcName = L"csgo.exe";
+const std::wstring targetProcName = L"csgo.exe"; //notepad.exe 
 // 目标窗口名称
-const std::wstring targetWndName = L"Counter-Strike: Global Offensive";
+const std::wstring targetWndName = L"Counter-Strike: Global Offensive";//target.txt - Notepad
 
 // 目标窗口句柄
 HWND hTargetWnd;
@@ -29,14 +29,21 @@ std::vector<std::unique_ptr<Player>> enemy;
 
 namespace FunctionEnableFlag
 {
-	bool bHealthReader = false;
-	bool bTriggerBot = false;
 	bool bOverlay = false;
+	bool bTriggerBot = false;
+	bool bAimBot = false;
 	bool bESP = false;
+	bool bRadarHack = false;
 	bool bNULL = false;
 }
 
 namespace ThreadExistFlag
 {
-	bool 
+	bool bGeneral = false;
+	bool bOverlay = false;
+	bool bTriggerBot = false;
+	bool bAimBot = false;
+	bool bESP = false;
+	bool bRadarHack = false;
+	bool bNULL = false;
 }

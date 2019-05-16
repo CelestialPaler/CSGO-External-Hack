@@ -1,3 +1,27 @@
+ï»¿// CTHackFramework 														      
+//	A framework for general game hacking								      
+// Copyright Â© 2019 Celestial Tech All rights reserved.
+//
+// The MIT License (MIT)
+// Copyright (c) 2019 Celestial Tech
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+// 
+// The above copyright noticeand this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #pragma once 
 
 #include <memory>
@@ -11,23 +35,23 @@
 
 void ESP();
 
-// ¶ÁÈ¡±¾µØÍæ¼ÒĞÅÏ¢
+// è¯»å–æœ¬åœ°ç©å®¶ä¿¡æ¯
 void ReadLocalPlayerInfo(void);
 
-// ¶ÁÈ¡ÆäËûÍæ¼ÒĞÅÏ¢
+// è¯»å–å…¶ä»–ç©å®¶ä¿¡æ¯
 void ReadOtherPlayersInfo(void);
 
-// ¶ÁÈ¡¹Û²ì¾ØÕó
+// è¯»å–è§‚å¯ŸçŸ©é˜µ
 void ReadViewMatrix(void);
 
-// ¾ø¶Ô¿Õ¼ä×ø±êÍ¶Ó°Ïà¶ÔÆÁÄ»×ø±ê
+// ç»å¯¹ç©ºé—´åæ ‡æŠ•å½±ç›¸å¯¹å±å¹•åæ ‡
 bool WorldProjectToScreen(Vec3& _world, Vec2& _screen);
 
-// ¼ÆËã¾ø¶Ô¿Õ¼ä¾àÀë
+// è®¡ç®—ç»å¯¹ç©ºé—´è·ç¦»
 float CalculateDistance(Vec3 _vec1, Vec3 _vec2);
 
-// ´òÓ¡ËùÓĞÍæ¼ÒĞÅÏ¢
+// æ‰“å°æ‰€æœ‰ç©å®¶ä¿¡æ¯
 void PrintPlayerInfo(void);
 
-// ´òÓ¡¹Û²ì¾ØÕó
+// æ‰“å°è§‚å¯ŸçŸ©é˜µ
 void PrintViewMatrix(void);

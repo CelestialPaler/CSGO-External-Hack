@@ -78,6 +78,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <IntDir>Inter\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,6 +140,7 @@
     <ClCompile Include="DirectX\Graphics.cpp" />
     <ClCompile Include="DirectX\Shaders.cpp" />
     <ClCompile Include="Function\ESP.cpp" />
+    <ClCompile Include="Function\RadarHack.cpp" />
     <ClCompile Include="Function\TriggerBot.cpp" />
     <ClCompile Include="Game\GameData.cpp" />
     <ClCompile Include="HUD\HUD.cpp" />
@@ -152,6 +155,8 @@
     <ClInclude Include="DirectX\Shaders.h" />
     <ClInclude Include="DirectX\Vertex.h" />
     <ClInclude Include="Function\ESP.h" />
+    <ClInclude Include="Function\RadarHack.h" />
+    <ClInclude Include="Function\TriggerBot.h" />
     <ClInclude Include="Game\GameData.h" />
     <ClInclude Include="Game\GameDef.h" />
     <ClInclude Include="Game\GameStruct.h" />

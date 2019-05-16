@@ -10,6 +10,7 @@
 #include "..//Game/GameDef.h"
 #include "..//Game/GameStruct.h"
 #include "..//Util/Logger.h"
+#include "..//Util/StepTimer.h"
 
 #include "..//Function/ESP.h"
 
@@ -51,6 +52,7 @@ private:
 	void ShowDeclare(int x, int y);
 	void ShowTimeDebug(int x, int y);
 	void ShowFunctionInfo(int x, int y);
+	void ShowESPDebug(int x, int y);
 
 	void ShowESP();
 	void ShowPlayer(const std::unique_ptr<Player>& player);

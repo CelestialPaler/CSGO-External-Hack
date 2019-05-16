@@ -22,72 +22,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "RadarHack.h"
 
-#include <string>
-#include <vector>
-#include <thread>
-
-#include "..//Util/Logger.h"
-#include "..//Process/Process.h"
-#include "..//Game/GameStruct.h"
-#include "..//Game/GameData.h"
-#include "..//HUD/HUD.h"
-
-#include "..//Function/TriggerBot.h"
-#include "..//Function/ESP.h"
-#include "..//Function/RadarHack.h"
-
-class Manager
+void RadarHack()
 {
-public:
-	// 构造函数
-	Manager() {};
-	// 禁止复制初始化与赋值操作
-	Manager(const Manager&) = delete;
-	Manager& operator = (const Manager&) = delete;
-	// 析构函数
-	~Manager() {};
-
-public:
-	// 主函数
-	void Run(void);
-
-	// 初始化函数
-	void Initialize(void);
-
-private:
-	static void GeneralThreadFunc(void);
-	static void OverlayThreadFunc(void);
-	static void TriggerBotThreadFunc(void);
-	static void RadarHackThreadFunc(void);
-	static void ESPThreadFunc(void);
-
-public:
-	// 键盘输入处理
-	void HandleKeyBoardInput(void);
-	// 鼠标输入处理
-	void HandleMouseInput() {}
-	// 更新配置文件
-	void UpdateFromConfigFile() {}
-
-private:
-	// 开关外挂功能
-	void Toggle(bool& _enable)
+	if (FunctionEnableFlag::bOverlay)
 	{
-		_enable = !_enable;
-		if (true)
+		Process* proc = Process::GetInstance();
+		QWORD clientAddr = proc->moduleBaseAddr[L"client_panorama.dll"];
+
+		for (size_t i = 1; i < 64; i++)
 		{
-			if (_enable)
+			DWORD targetPlayerAddr = proc->ReadDWORD(clientAddr + (QWORD)hazedumper::signatures::dwEntityList + (QWORD)(i * 0x10));
+			if (targetPlayerAddr != NULL)
 			{
-				Beep(500, 100);
-				Beep(600, 100);
-			}
-			else
-			{
-				Beep(600, 100);
-				Beep(500, 100);
+				BOOL targetPlayerIsSpotted = proc->ReadBool(targetPlayerAddr + (QWORD)hazedumper::netvars::m_bSpotted);
+				if (targetPlayerIsSpotted == FALSE)
+					do
+					{
+						proc->WriteBool(targetPlayerAddr + (QWORD)hazedumper::netvars::m_bSpotted, TRUE);
+					} while (!proc->ReadBool(targetPlayerAddr + (QWORD)hazedumper::netvars::m_bSpotted));
 			}
 		}
 	}
-};
+	Sleep(10);
+}
