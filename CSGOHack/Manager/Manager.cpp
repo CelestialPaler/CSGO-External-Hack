@@ -33,7 +33,7 @@ void Manager::Run(void)
 	std::thread overlayThread(OverlayThreadFunc);
 	std::thread triggerBotThread(TriggerBotThreadFunc);
 	std::thread RadarHackThread(RadarHackThreadFunc);
-	std::thread ESPThread(ESPThreadFunc);
+	//std::thread ESPThread(ESPThreadFunc);
 
 	while (true)
 	{

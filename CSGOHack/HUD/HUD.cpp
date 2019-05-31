@@ -226,6 +226,33 @@ void HUD::ShowESP()
 	}
 }
 
+float t = 0;
+void HUD::ShowESPDebug()
+{
+	localPlayer->team = 2;
+
+	std::unique_ptr<Player> player1 = std::make_unique<Player>();
+	player1->bodyScrCoords.x = targetWndWidth / 2 + 200 * sin(t);
+	player1->bodyScrCoords.y = targetWndHeight / 2 + 200 * cos(t);
+	player1->health = 50 + 50 * sin(t);
+	player1->distance = 500 + 100 * sin(t);
+	player1->team = 2;
+	ShowPlayer(player1);
+
+	std::unique_ptr<Player> player2 = std::make_unique<Player>();
+	player2->bodyScrCoords.x = targetWndWidth / 2 - 200 * sin(t);
+	player2->bodyScrCoords.y = targetWndHeight / 2 - 200 * cos(t);
+	player2->health = 50 + 50 * sin(t);
+	player1->team = 3;
+	player2->distance = 500 + 100 * sin(t);
+	ShowPlayer(player2);
+	t += 0.05;
+	if (t>= 100)
+	{
+		t = 0;
+	}
+}
+
 void HUD::ShowPlayer(const std::unique_ptr<Player> & player)
 {
 	int x = player->bodyScrCoords.x;
@@ -241,7 +268,7 @@ void HUD::ShowPlayer(const std::unique_ptr<Player> & player)
 		DrawLine(x, targetWndHeight - y - h / 2, targetWndWidth / 2, -100, 2, color);
 		DrawRect(x, targetWndHeight - y + h / 2 + 5, player->health / 2, 2, 2, color);
 		std::stringstream ss;
-		ss << player->health << " " << (int)(player->distance / 10) << "m";
+		ss << std::setfill(' ') << std::setw(2) << player->health << "   " << (int)(player->distance / 10) << "m";
 		DrawString(Util::StringManipulation::StringToWstring(ss.str()), x - w, y - h / 2, color);
 	}
 }
@@ -360,7 +387,7 @@ int HUD::WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, 
 
 			if (FunctionEnableFlag::bESP)
 			{
-				ShowESP();
+				ShowESPDebug();
 			}
 
 			graphics->RenderFrame();

@@ -48,13 +48,14 @@ private:
 	void TimerStop();
 	float GetFPS();
 
-private:
+public:
 	void ShowDeclare(int x, int y);
 	void ShowTimeDebug(int x, int y);
 	void ShowFunctionInfo(int x, int y);
 	void ShowESPDebug(int x, int y);
 
 	void ShowESP();
+	void ShowESPDebug();
 	void ShowPlayer(const std::unique_ptr<Player>& player);
 		
 private:

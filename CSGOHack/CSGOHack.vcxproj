@@ -32,7 +32,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -42,7 +42,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -76,8 +76,8 @@
     <LibraryPath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Include;F:\Projects\TopProjects\CSGOHack\CSGOHack\x86;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)CSGOHack\Ref\DirectxTK\Libs\x86\Release;F:\Projects\TopProjects\CSGOHack\CSGOHack\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
     <IntDir>Inter\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -139,6 +139,7 @@
     <ClCompile Include="DirectX\AdapterReader.cpp" />
     <ClCompile Include="DirectX\Graphics.cpp" />
     <ClCompile Include="DirectX\Shaders.cpp" />
+    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Function\ESP.cpp" />
     <ClCompile Include="Function\RadarHack.cpp" />
     <ClCompile Include="Function\TriggerBot.cpp" />
@@ -154,6 +155,8 @@
     <ClInclude Include="DirectX\Graphics.h" />
     <ClInclude Include="DirectX\Shaders.h" />
     <ClInclude Include="DirectX\Vertex.h" />
+    <ClInclude Include="dllmain.h" />
+    <ClInclude Include="FontWrapper.h" />
     <ClInclude Include="Function\ESP.h" />
     <ClInclude Include="Function\RadarHack.h" />
     <ClInclude Include="Function\TriggerBot.h" />

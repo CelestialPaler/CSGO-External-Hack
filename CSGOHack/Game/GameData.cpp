@@ -6,9 +6,9 @@ const std::wstring devVersion = L"0.6b";
 // 目标进程ID
 DWORD targetPID;
 // 目标进程名称
-const std::wstring targetProcName = L"csgo.exe"; //notepad.exe 
+const std::wstring targetProcName = L"notepad.exe"; //notepad.exe csgo.exe
 // 目标窗口名称
-const std::wstring targetWndName = L"Counter-Strike: Global Offensive";//target.txt - Notepad
+const std::wstring targetWndName = L"target.txt - Notepad";//target.txt - Notepad Counter-Strike: Global Offensive
 
 // 目标窗口句柄
 HWND hTargetWnd;
